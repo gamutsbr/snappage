@@ -1,4 +1,4 @@
-SnapPage v1.0.1
+SnapPage v1.1.0
 ================
 
 Ferramenta de captura de página inteira para Chrome e navegadores Chromium.

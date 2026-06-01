@@ -8,9 +8,17 @@ This roadmap is directional. Items may move between versions as the product matu
 
 ## Current stable version
 
-### v1.0.1 — Patch release
+### v1.1.0 — Quality baseline and release automation
 
-Patch focused on release quality, installation clarity, extension icon display, and popup version consistency.
+Release focused on process quality and repeatable shipping.
+
+Delivered in this version:
+
+- Official public roadmap in `docs/ROADMAP.md`.
+- Official release checklist in `docs/RELEASE_CHECKLIST.md`.
+- Local packaging automation with `scripts/package-release.ps1`.
+- Local release readiness validation with `scripts/validate-release.ps1`.
+- Updated documentation links and release workflow guidance.
 
 ---
 
@@ -33,9 +41,9 @@ Planned work:
 
 ### v1.1.0 — Quality baseline and release automation
 
-Goal: reduce release mistakes and make every future version easier to ship safely.
+Status: released as the current quality baseline.
 
-Possible scope:
+Completed scope:
 
 - Release checklist.
 - Packaging script.

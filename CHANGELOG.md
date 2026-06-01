@@ -16,6 +16,24 @@ Versionamento segue [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.1.0] — 2026-06-01
+
+### Adicionado
+
+- Adicionado `docs/ROADMAP.md` com roadmap público do projeto.
+- Adicionado `docs/RELEASE_CHECKLIST.md` com checklist oficial de release.
+- Adicionado `scripts/package-release.ps1` para gerar o pacote `snappage-vX.X.X.zip`.
+- Adicionado `scripts/validate-release.ps1` para validar consistência de release antes de empacotar/publicar.
+
+### Documentação e processo
+
+- Atualizado `README.md` com links para roadmap, checklist de release e changelog.
+- Atualizado `CLAUDE.md` com a estrutura atual do projeto e fluxo de versionamento/release.
+- Atualizada a screenshot do popup para refletir a versão atual.
+- Ajustados o nome e a descrição do `src/manifest.json` para manter a linguagem em pt-BR.
+
+---
+
 ## [1.0.1] — 2026-06-01
 
 ### Corrigido
