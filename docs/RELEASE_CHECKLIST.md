@@ -115,6 +115,18 @@ The ZIP must not contain:
 
 Suggested package command:
 
+Suggested validation command:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/validate-release.ps1
+```
+
+Before tagging a final release commit, use:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/validate-release.ps1 -RequireCleanGit
+```
+
 ```powershell
 powershell -ExecutionPolicy Bypass -File scripts/package-release.ps1
 ```

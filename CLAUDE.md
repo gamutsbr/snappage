@@ -69,8 +69,9 @@ SemVer. On each release:
 1. Update `src/manifest.json` → `"version"`
 2. Add entry to `CHANGELOG.md`
 3. Update `LEIA-ME.txt` so it mentions the same version as `src/manifest.json`
-4. Build package with the preferred command: `powershell -ExecutionPolicy Bypass -File scripts/package-release.ps1`
-5. Package output must be `snappage-vX.X.X.zip` with the documented structure:
+4. Run release validation: `powershell -ExecutionPolicy Bypass -File scripts/validate-release.ps1`
+5. Build package with the preferred command: `powershell -ExecutionPolicy Bypass -File scripts/package-release.ps1`
+6. Package output must be `snappage-vX.X.X.zip` with the documented structure:
 
 ```
 snappage-vX.X.X/
@@ -87,10 +88,10 @@ snappage-vX.X.X/
 		└── icon128.png
 ```
 
-6. Ensure users load the unpacked extension from the `src/` folder
-7. Generate the ZIP from the same commit that will receive tag `vX.X.X`
-8. `git tag vX.X.X && git push origin vX.X.X`
-9. Upload `snappage-vX.X.X.zip` to GitHub Releases
+7. Ensure users load the unpacked extension from the `src/` folder
+8. Generate the ZIP from the same commit that will receive tag `vX.X.X`
+9. `git tag vX.X.X && git push origin vX.X.X`
+10. Upload `snappage-vX.X.X.zip` to GitHub Releases
 
 Rules:
 
