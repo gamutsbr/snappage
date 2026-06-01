@@ -40,6 +40,7 @@ Expected:
 ## 3. Documentation
 
 - [ ] Update `CHANGELOG.md`.
+- [ ] Update `LEIA-ME.txt` so it mentions the same release version as `src/manifest.json`.
 - [ ] Update `README.md` if install instructions, features, compatibility, or roadmap changed.
 - [ ] Update `CLAUDE.md` if agent/developer workflow changed.
 - [ ] Update docs under `docs/` if release process or roadmap changed.
@@ -111,6 +112,13 @@ The ZIP must not contain:
 - [ ] Recreate the ZIP after the final source changes.
 - [ ] Confirm the ZIP exists under `releases/`.
 - [ ] Confirm `releases/*.zip` is ignored by Git.
+
+Suggested package command:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File scripts/package-release.ps1
+```
+
 - [ ] List ZIP contents before publishing.
 - [ ] Confirm ZIP contains `LEIA-ME.txt`.
 - [ ] Confirm ZIP contains `snappage-vX.X.X/src/manifest.json`.
