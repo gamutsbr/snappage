@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "SnapPage – Full Page Screenshot",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Capture screenshots of full pages — mesmo além do que aparece na tela. Download ou copia direto.",
   "icons": {
     "16": "icons/icon16.png",

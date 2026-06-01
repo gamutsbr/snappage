@@ -1,0 +1,57 @@
+SnapPage v1.0.1
+================
+
+Ferramenta de captura de página inteira para Chrome e navegadores Chromium.
+
+INSTALAÇÃO MANUAL
+
+1. Descompacte este arquivo ZIP.
+2. Abra uma destas páginas no navegador:
+   - Chrome: chrome://extensions
+   - Brave: brave://extensions
+   - Edge: edge://extensions
+3. Ative o "Modo do desenvolvedor".
+4. Clique em "Carregar sem compactação".
+5. Selecione a pasta "src" que está dentro da pasta descompactada.
+
+IMPORTANTE
+
+Selecione a pasta "src", não a pasta raiz do pacote.
+
+O navegador precisa encontrar o arquivo:
+
+src/manifest.json
+
+USO
+
+1. Fixe o SnapPage na barra de extensões, se quiser.
+2. Abra a página que deseja capturar.
+3. Clique no ícone do SnapPage.
+4. Escolha o modo de captura, formato e atraso.
+5. Clique em "Capturar".
+6. Depois da prévia, escolha "Download" ou "Copiar".
+
+OBSERVAÇÃO
+
+Durante a captura, o navegador pode mostrar rapidamente uma barra informando que o DevTools está conectado. Isso é esperado, pois o SnapPage usa a Chrome Debugger API para capturar a página inteira.
+
+COMPATIBILIDADE
+
+Compatível com Chrome, Brave, Edge, Opera, Vivaldi, Arc e outros navegadores Chromium.
+
+Firefox e Safari não são suportados nesta versão.
+
+LICENÇA
+
+PolyForm Noncommercial 1.0.0.
+Uso pessoal e não-comercial permitido.
+Monetização e uso comercial não são permitidos sem autorização.
+
+Contato comercial:
+contato@gamuts.com.br
+
+Site:
+https://gamuts.com.br
+
+Repositório:
+https://github.com/gamutsbr/snappage

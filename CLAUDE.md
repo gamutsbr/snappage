@@ -28,6 +28,7 @@ releases/             ← local ZIPs only, gitignored
 ## Architecture
 
 Capture flow:
+
 1. Popup → `chrome.runtime.sendMessage({ action: 'capture' })` → background
 2. Background injects script to get page dimensions
 3. Attaches debugger, calls `Page.captureScreenshot` with `captureBeyondViewport: true`
@@ -52,10 +53,35 @@ No build step. No dependencies. Pure HTML/CSS/JS served directly by Chrome.
 ## Versioning
 
 SemVer. On each release:
+
 1. Update `src/manifest.json` → `"version"`
 2. Add entry to `CHANGELOG.md`
-3. `git tag vX.X.X && git push origin vX.X.X`
-4. Upload `src/` ZIP to GitHub Releases
+3. Build package `snappage-vX.X.X.zip` with this structure:
+
+```
+snappage-vX.X.X/
+├── LEIA-ME.txt
+└── src/
+	├── manifest.json
+	├── background.js
+	├── popup.html
+	├── popup.css
+	├── popup.js
+	└── icons/
+		├── icon16.png
+		├── icon48.png
+		└── icon128.png
+```
+
+4. Ensure users load the unpacked extension from the `src/` folder
+5. Generate the ZIP from the same commit that will receive tag `vX.X.X`
+6. `git tag vX.X.X && git push origin vX.X.X`
+7. Upload `snappage-vX.X.X.zip` to GitHub Releases
+
+Rules:
+
+- ZIP file must be named `snappage-vX.X.X.zip`
+- Do not commit files inside `releases/`
 
 ---
 

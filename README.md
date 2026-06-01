@@ -18,10 +18,12 @@ _(em breve)_
 
 ### Manual (desenvolvedor)
 
-1. Baixe o [último release](../../releases/latest) e descompacte
+> No GitHub Releases, baixe o asset `snappage-vX.X.X.zip`. Os arquivos automáticos "Source code" são voltados para desenvolvedores.
+
+1. Baixe o arquivo `snappage-vX.X.X.zip` no [último release](../../releases/latest) e descompacte
 2. Abra `chrome://extensions` (ou `brave://extensions`)
 3. Ative **Modo do desenvolvedor** → **Carregar sem compactação**
-4. Selecione a pasta `src/` descompactada
+4. Selecione a pasta `src/` dentro da pasta descompactada
 
 ---
 

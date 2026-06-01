@@ -9,9 +9,24 @@ Versionamento segue [Semantic Versioning](https://semver.org/).
 ## [Não lançado]
 
 ### Planejado para v1.1.0
+
 - Atalho de teclado global (`Alt+Shift+S`)
 - Formato WebP
 - Opção de captura em alta resolução (2×)
+
+---
+
+## [1.0.1] — 2026-06-01
+
+### Corrigido
+
+- Adicionado bloco top-level `icons` no `src/manifest.json` para exibir corretamente o ícone do SnapPage em `chrome://extensions`.
+- Corrigida a versão exibida no popup para acompanhar automaticamente a versão do `src/manifest.json`.
+
+### Documentação e empacotamento
+
+- Adicionado `LEIA-ME.txt` com instruções de instalação manual para usuários que baixam o pacote da release.
+- Padronizada a estrutura recomendada do pacote de release para incluir a pasta `src/` e instruções na raiz.
 
 ---
 

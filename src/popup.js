@@ -84,6 +84,7 @@ function setActiveByValue(parentId, selector, value) {
 // ─── Init ─────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', async () => {
+  setAppVersion();
   setStatus('ready');
 
   // Load saved preferences before building UI
@@ -148,6 +149,23 @@ document.addEventListener('DOMContentLoaded', async () => {
   // Capture button
   captureBtn.addEventListener('click', handleCapture);
 });
+
+function setAppVersion() {
+  const appVersionEl = document.querySelector('[data-app-version]');
+  if (!appVersionEl) return;
+
+  try {
+    const manifest = chrome.runtime.getManifest();
+    if (manifest?.version) {
+      appVersionEl.textContent = `v${manifest.version}`;
+      return;
+    }
+  } catch {
+    // keep fallback placeholder if runtime manifest is unavailable
+  }
+
+  appVersionEl.textContent = 'v?';
+}
 
 // ─── Capture handler ─────────────────────────────────────────────────────────
 
