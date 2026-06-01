@@ -16,12 +16,12 @@ Desenvolvida pela [Gamuts](https://gamuts.com.br) — apps, ferramentas e jogos 
 
 _(em breve)_
 
-### Manual (desenvolvedor)
+### Manual via GitHub Releases
 
 > No GitHub Releases, baixe o asset `snappage-vX.X.X.zip`. Os arquivos automáticos "Source code" são voltados para desenvolvedores.
 
 1. Baixe o arquivo `snappage-vX.X.X.zip` no [último release](../../releases/latest) e descompacte
-2. Abra `chrome://extensions` (ou `brave://extensions`)
+2. Abra `chrome://extensions` (ou `brave://extensions`, `edge://extensions`)
 3. Ative **Modo do desenvolvedor** → **Carregar sem compactação**
 4. Selecione a pasta `src/` dentro da pasta descompactada
 
@@ -61,14 +61,22 @@ Usa a **Chrome Debugger API** com `Page.captureScreenshot` e `captureBeyondViewp
 
 ---
 
-## Roadmap
+## Documentação do projeto
+
+- [Roadmap](docs/ROADMAP.md) — direção de produto, próximas fases e épicos futuros
+- [Checklist de release](docs/RELEASE_CHECKLIST.md) — processo de QA, empacotamento e publicação
+- [Changelog](CHANGELOG.md) — histórico de versões publicadas
+
+---
+
+## Roadmap resumido
 
 - [x] v1.0.0 — MVP: captura completa, formatos, delay, download, clipboard, persistência
-- [ ] v1.1.0 — Atalho de teclado + formato WebP + captura em 2× (alta resolução)
-- [ ] v1.2.0 — Captura por elemento: hover destaca o div, clique captura exatamente aquele bloco
-- [ ] v1.3.0 — Seleção livre com handles ajustáveis nos cantos
-- [ ] v1.4.0 — Anotações pós-captura (seta, retângulo, texto)
-- [ ] v1.5.0 — Chrome Web Store
+- [x] v1.0.1 — Correções de ícone, versão no popup e empacotamento
+- [ ] v1.1.0 — QA baseline, checklist e automação de release
+- [ ] Futuro — WebP, captura 2×, atalhos, captura por elemento, seleção livre, anotações e Chrome Web Store
+
+Veja o roadmap completo em [docs/ROADMAP.md](docs/ROADMAP.md).
 
 ---
 
