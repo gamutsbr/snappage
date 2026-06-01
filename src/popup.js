@@ -1,0 +1,289 @@
+// ─── Default state ────────────────────────────────────────────────────────────
+
+const DEFAULTS = {
+  mode:      'full',
+  format:    'png',
+  quality:   85,
+  delay:     0,
+  download:  true,
+  clipboard: false,
+};
+
+const state = { ...DEFAULTS, busy: false };
+
+// ─── Elements ────────────────────────────────────────────────────────────────
+
+const $ = (id) => document.getElementById(id);
+
+const statusDot       = $('statusDot');
+const captureBtn      = $('captureBtn');
+const captureText     = $('captureText');
+const qualitySlider   = $('qualitySlider');
+const qualityValue    = $('qualityValue');
+const qualityBox      = $('qualityContainer');
+const outputDownload  = $('outputDownload');
+const outputClipboard = $('outputClipboard');
+const previewArea     = $('previewArea');
+const previewImg      = $('previewImg');
+const previewMeta     = $('previewMeta');
+const toast           = $('toast');
+
+// ─── Persistence ─────────────────────────────────────────────────────────────
+
+const STORAGE_KEY = 'snappage_prefs';
+
+async function loadSettings() {
+  try {
+    const data = await chrome.storage.local.get(STORAGE_KEY);
+    const saved = data[STORAGE_KEY];
+    if (saved) Object.assign(state, saved);
+  } catch {
+    // storage unavailable — use defaults silently
+  }
+}
+
+function saveSettings() {
+  const prefs = {
+    mode:      state.mode,
+    format:    state.format,
+    quality:   state.quality,
+    delay:     state.delay,
+    download:  state.download,
+    clipboard: state.clipboard,
+  };
+  chrome.storage.local.set({ [STORAGE_KEY]: prefs }).catch(() => {});
+}
+
+// ─── Apply saved state to UI ──────────────────────────────────────────────────
+
+function applyStateToUI() {
+  // Mode
+  setActiveByValue('modeGroup', '.toggle-btn', state.mode);
+
+  // Format + quality slider
+  setActiveByValue('formatGroup', '.pill-btn', state.format);
+  qualityBox.style.display = state.format === 'jpeg' ? 'flex' : 'none';
+  qualitySlider.value = state.quality;
+  qualityValue.textContent = `${state.quality}%`;
+
+  // Delay
+  setActiveByValue('delayGroup', '.pill-btn', String(state.delay));
+
+  // Checkboxes
+  outputDownload.checked  = state.download;
+  outputClipboard.checked = state.clipboard;
+}
+
+function setActiveByValue(parentId, selector, value) {
+  const parent = $(parentId);
+  parent.querySelectorAll(selector).forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.value === value);
+  });
+}
+
+// ─── Init ─────────────────────────────────────────────────────────────────────
+
+document.addEventListener('DOMContentLoaded', async () => {
+  setStatus('ready');
+
+  // Load saved preferences before building UI
+  await loadSettings();
+  applyStateToUI();
+
+  // ── Listeners ──────────────────────────────────────────────────────────────
+
+  // Mode
+  delegate('modeGroup', '.toggle-btn', (btn) => {
+    activateIn('modeGroup', btn);
+    state.mode = btn.dataset.value;
+    saveSettings();
+  });
+
+  // Format
+  delegate('formatGroup', '.pill-btn', (btn) => {
+    activateIn('formatGroup', btn);
+    state.format = btn.dataset.value;
+    qualityBox.style.display = state.format === 'jpeg' ? 'flex' : 'none';
+    saveSettings();
+  });
+
+  // Quality slider
+  qualitySlider.addEventListener('input', () => {
+    state.quality = parseInt(qualitySlider.value, 10);
+    qualityValue.textContent = `${state.quality}%`;
+    saveSettings();
+  });
+
+  // Delay
+  delegate('delayGroup', '.pill-btn', (btn) => {
+    activateIn('delayGroup', btn);
+    state.delay = parseInt(btn.dataset.value, 10);
+    saveSettings();
+  });
+
+  // Checkboxes — at least one must stay checked
+  outputDownload.addEventListener('change', () => {
+    state.download = outputDownload.checked;
+    if (!state.download && !state.clipboard) {
+      outputDownload.checked = true;
+      state.download = true;
+    }
+    saveSettings();
+  });
+
+  outputClipboard.addEventListener('change', () => {
+    state.clipboard = outputClipboard.checked;
+    if (!state.download && !state.clipboard) {
+      outputClipboard.checked = true;
+      state.clipboard = true;
+    }
+    saveSettings();
+  });
+
+  // Preview close
+  $('previewClose').addEventListener('click', () => {
+    previewArea.style.display = 'none';
+  });
+
+  // Capture button
+  captureBtn.addEventListener('click', handleCapture);
+});
+
+// ─── Capture handler ─────────────────────────────────────────────────────────
+
+async function handleCapture() {
+  if (state.busy) return;
+
+  state.busy = true;
+  captureBtn.disabled = true;
+
+  try {
+    // ── Countdown ──────────────────────────────────
+    if (state.delay > 0) {
+      setStatus('counting');
+      for (let i = state.delay; i > 0; i--) {
+        captureText.textContent = `AGUARDANDO ${i}s…`;
+        await sleep(1000);
+      }
+    }
+
+    // ── Capture ────────────────────────────────────
+    setStatus('working');
+    captureText.textContent = 'CAPTURANDO…';
+
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    if (!tab) throw new Error('Nenhuma aba ativa encontrada');
+
+    const blocked = ['chrome://', 'edge://', 'about:', 'chrome-extension://'];
+    if (blocked.some(p => tab.url.startsWith(p))) {
+      throw new Error('Não é possível capturar páginas do sistema');
+    }
+
+    const result = await chrome.runtime.sendMessage({
+      action:  'capture',
+      tabId:   tab.id,
+      options: {
+        format:   state.format,
+        quality:  state.quality,
+        fullPage: state.mode === 'full',
+      },
+    });
+
+    if (!result?.success) throw new Error(result?.error || 'Falha ao capturar');
+
+    // ── Build data URL ─────────────────────────────
+    const mime     = state.format === 'jpeg' ? 'image/jpeg' : 'image/png';
+    const ext      = state.format === 'jpeg' ? 'jpg' : 'png';
+    const dataUrl  = `data:${mime};base64,${result.data}`;
+    const filename = buildFilename(tab.title, ext);
+
+    // ── Download ───────────────────────────────────
+    if (state.download) {
+      await chrome.runtime.sendMessage({ action: 'download', dataUrl, filename });
+    }
+
+    // ── Clipboard ──────────────────────────────────
+    if (state.clipboard) {
+      try {
+        const blob = await (await fetch(dataUrl)).blob();
+        await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })]);
+      } catch {
+        showToast('Clipboard indisponível — salvo como download', 'error');
+      }
+    }
+
+    // ── Preview ────────────────────────────────────
+    renderPreview(dataUrl, result.dims, ext.toUpperCase());
+
+    const verbs = [];
+    if (state.download)  verbs.push('baixado');
+    if (state.clipboard) verbs.push('copiado');
+    showToast(`✓ Print ${verbs.join(' e ')}!`, 'success');
+    setStatus('ready');
+
+  } catch (err) {
+    showToast(err.message || 'Algo deu errado', 'error');
+    setStatus('ready');
+
+  } finally {
+    state.busy = false;
+    captureBtn.disabled = false;
+    captureText.textContent = 'CAPTURAR';
+  }
+}
+
+// ─── Preview ─────────────────────────────────────────────────────────────────
+
+function renderPreview(dataUrl, dims, fmtLabel) {
+  previewImg.src = dataUrl;
+  previewMeta.textContent = dims
+    ? `${dims.scrollWidth} × ${dims.scrollHeight} px  ·  ${fmtLabel}`
+    : fmtLabel;
+  previewArea.style.display = 'block';
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+function setStatus(s) {
+  statusDot.className = `status-dot ${s}`;
+}
+
+function delegate(parentId, selector, fn) {
+  $(parentId).addEventListener('click', (e) => {
+    const el = e.target.closest(selector);
+    if (el) fn(el);
+  });
+}
+
+function activateIn(parentId, activeEl) {
+  $(parentId).querySelectorAll('.active').forEach(el => el.classList.remove('active'));
+  activeEl.classList.add('active');
+}
+
+function buildFilename(title, ext) {
+  const clean = (title || 'pagina')
+    .replace(/[<>:"/\\|?*]/g, '')
+    .trim()
+    .replace(/\s+/g, '-')
+    .toLowerCase()
+    .slice(0, 60);
+
+  const now  = new Date();
+  const date = now.toISOString().slice(0, 10);
+  const time = now.toTimeString().slice(0, 8).replace(/:/g, '-');
+
+  return `${clean}_${date}_${time}.${ext}`;
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+let toastTimer;
+function showToast(msg, type = '') {
+  toast.textContent = msg;
+  toast.className   = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { toast.className = 'toast'; }, 3200);
+}

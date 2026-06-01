@@ -1,0 +1,36 @@
+# ── Sistemas operacionais ─────────────────────────────
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+
+# ── Claude Code — instruções privadas (nunca commitadas) ──
+# Use CLAUDE_PRIVATE.md para contexto sensível: endpoints internos,
+# credenciais de teste, notas que não devem ser públicas.
+CLAUDE_PRIVATE.md
+
+# ── Editor / IDE ──────────────────────────────────────
+.vscode/settings.json
+.vscode/*.code-workspace
+.idea/
+*.swp
+*.swo
+*.suo
+*.user
+
+# ── Releases locais (distribuição via GitHub Releases) ─
+releases/*.zip
+
+# ── Node (caso ferramentas de build sejam adicionadas) ─
+node_modules/
+npm-debug.log*
+package-lock.json
