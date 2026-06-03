@@ -23,10 +23,17 @@ const qualityValue    = $('qualityValue');
 const qualityBox      = $('qualityContainer');
 const outputDownload  = $('outputDownload');
 const outputClipboard = $('outputClipboard');
+const outputNote      = $('outputNote');
 const previewArea     = $('previewArea');
 const previewImg      = $('previewImg');
 const previewMeta     = $('previewMeta');
 const toast           = $('toast');
+
+function getFormatMeta(format) {
+  if (format === 'jpeg') return { mime: 'image/jpeg', ext: 'jpg' };
+  if (format === 'webp') return { mime: 'image/webp', ext: 'webp' };
+  return { mime: 'image/png', ext: 'png' };
+}
 
 // ─── Persistence ─────────────────────────────────────────────────────────────
 
@@ -70,8 +77,32 @@ function applyStateToUI() {
   setActiveByValue('delayGroup', '.pill-btn', String(state.delay));
 
   // Checkboxes
-  outputDownload.checked  = state.download;
-  outputClipboard.checked = state.clipboard;
+  updateOutputControls();
+}
+
+function updateOutputControls() {
+  const copySupported = state.format === 'png';
+  const clipboardLabel = outputClipboard.closest('.checkbox-label');
+
+  if (!copySupported) {
+    state.clipboard = false;
+  }
+
+  if (!state.download) {
+    state.download = true;
+  }
+
+  outputDownload.checked = state.download;
+  outputClipboard.checked = copySupported ? state.clipboard : false;
+  outputClipboard.disabled = !copySupported;
+
+  if (clipboardLabel) {
+    clipboardLabel.hidden = !copySupported;
+  }
+
+  if (outputNote) {
+    outputNote.hidden = copySupported;
+  }
 }
 
 function setActiveByValue(parentId, selector, value) {
@@ -105,6 +136,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     activateIn('formatGroup', btn);
     state.format = btn.dataset.value;
     qualityBox.style.display = state.format === 'jpeg' ? 'flex' : 'none';
+    updateOutputControls();
     saveSettings();
   });
 
@@ -211,8 +243,8 @@ async function handleCapture() {
     if (!result?.success) throw new Error(result?.error || 'Falha ao capturar');
 
     // ── Build data URL ─────────────────────────────
-    const mime     = state.format === 'jpeg' ? 'image/jpeg' : 'image/png';
-    const ext      = state.format === 'jpeg' ? 'jpg' : 'png';
+    const { mime, ext } = getFormatMeta(state.format);
+    const shouldCopy = state.format === 'png' && state.clipboard;
     const dataUrl  = `data:${mime};base64,${result.data}`;
     const filename = buildFilename(tab.title, ext);
 
@@ -222,7 +254,7 @@ async function handleCapture() {
     }
 
     // ── Clipboard ──────────────────────────────────
-    if (state.clipboard) {
+    if (shouldCopy) {
       try {
         const blob = await (await fetch(dataUrl)).blob();
         await navigator.clipboard.write([new ClipboardItem({ [mime]: blob })]);
@@ -236,7 +268,7 @@ async function handleCapture() {
 
     const verbs = [];
     if (state.download)  verbs.push('baixado');
-    if (state.clipboard) verbs.push('copiado');
+    if (shouldCopy) verbs.push('copiado');
     showToast(`✓ Print ${verbs.join(' e ')}!`, 'success');
     setStatus('ready');
 

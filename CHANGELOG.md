@@ -8,7 +8,11 @@ Versionamento segue [Semantic Versioning](https://semver.org/).
 
 ## [Não lançado]
 
-### Planejado para v1.1.0
+### Adicionado
+
+- Suporte inicial ao formato WebP para captura, prévia e download.
+
+### Planejado para v1.2.0
 
 - Atalho de teclado global (`Alt+Shift+S`)
 - Formato WebP

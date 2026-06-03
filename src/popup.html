@@ -55,8 +55,12 @@
         <div class="pill-group" id="formatGroup">
           <button class="pill-btn active" data-value="png">PNG</button>
           <button class="pill-btn"        data-value="jpeg">JPEG</button>
+          <button class="pill-btn"        data-value="webp">WebP</button>
         </div>
-        <div class="quality-container" id="qualityContainer">
+      </div>
+      <div class="quality-container" id="qualityContainer">
+        <label class="section-label quality-label" for="qualitySlider">QUALIDADE JPEG</label>
+        <div class="quality-controls">
           <input type="range" class="quality-slider" id="qualitySlider" min="10" max="100" value="85">
           <span class="quality-value" id="qualityValue">85%</span>
         </div>
@@ -89,6 +93,7 @@
           <span>Copiar</span>
         </label>
       </div>
+      <div class="output-note" id="outputNote" hidden>Copiar está disponível apenas para PNG. Use Download para JPEG ou WebP.</div>
     </section>
 
   </main>

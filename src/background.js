@@ -51,8 +51,9 @@ async function captureScreenshot(tabId, options) {
   await attachDebugger(tabId);
 
   try {
+    const screenshotFormat = format === 'jpeg' || format === 'webp' ? format : 'png';
     const params = {
-      format: format === 'jpeg' ? 'jpeg' : 'png',
+      format: screenshotFormat,
       captureBeyondViewport: fullPage,
     };
 

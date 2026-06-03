@@ -31,7 +31,7 @@ _(em breve)_
 
 - **Página completa** — captura tudo, incluindo o que está abaixo do fold
 - **Visível apenas** — captura somente a área visível na tela
-- **PNG ou JPEG** — com slider de qualidade para JPEG (10–100%)
+- **PNG, JPEG ou WebP** — escolha o formato da captura
 - **Delay configurável** — 1s, 3s ou 5s antes de capturar (útil para hover states e animações)
 - **Download** com nome automático: `titulo-da-pagina_2026-05-31_14-22-05.png`
 - **Copiar para clipboard** — cola direto no Figma, Notion, onde quiser
