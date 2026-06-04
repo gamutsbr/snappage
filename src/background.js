@@ -33,20 +33,55 @@ function debugCommand(tabId, method, params = {}) {
 // ─── Core capture function ───────────────────────────────────────────────────
 
 async function captureScreenshot(tabId, options) {
-  const { format = 'png', quality = 90, fullPage = true } = options;
+  const { format = 'png', quality = 90, fullPage = true, resolution = 1 } = options;
+
+  // Pixel guardrail for 2× captures
+  const MAX_OUTPUT_PIXELS = 50_000_000;
 
   // Get page dimensions via content script
   const [injection] = await chrome.scripting.executeScript({
     target: { tabId },
-    func: () => ({
-      scrollWidth:  document.documentElement.scrollWidth,
-      scrollHeight: document.documentElement.scrollHeight,
-      clientWidth:  document.documentElement.clientWidth,
-      clientHeight: document.documentElement.clientHeight,
-    }),
+    func: (isFullPage, scale) => {
+      const body = document.body;
+      const docEl = document.documentElement;
+      const viewport = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        x: window.scrollX,
+        y: window.scrollY,
+      };
+
+      if (isFullPage) {
+        return {
+          viewport,
+          scrollWidth:  docEl.scrollWidth,
+          scrollHeight: docEl.scrollHeight,
+          clientWidth:  docEl.clientWidth,
+          clientHeight: docEl.clientHeight,
+          scale,
+        };
+      } else {
+        return {
+          viewport,
+          scrollWidth:  viewport.width,
+          scrollHeight: viewport.height,
+          clientWidth:  viewport.width,
+          clientHeight: viewport.height,
+          scale,
+        };
+      }
+    },
+    args: [fullPage, resolution],
   });
 
   const dims = injection.result;
+  const scale = dims.scale || 1;
+
+  // Estimate output pixels and check guardrail
+  const estimatedOutputPixels = dims.scrollWidth * dims.scrollHeight * scale * scale;
+  if (estimatedOutputPixels > MAX_OUTPUT_PIXELS) {
+    throw new Error('Captura muito grande para 2×. Use 1× ou capture uma área menor.');
+  }
 
   await attachDebugger(tabId);
 
@@ -65,12 +100,28 @@ async function captureScreenshot(tabId, options) {
         y: 0,
         width:  dims.scrollWidth,
         height: dims.scrollHeight,
-        scale: 1,
+        scale: scale,
+      };
+    } else if (scale > 1) {
+      // For visible-only 2×, use explicit viewport clip
+      params.clip = {
+        x: dims.viewport.x,
+        y: dims.viewport.y,
+        width:  dims.viewport.width,
+        height: dims.viewport.height,
+        scale: scale,
       };
     }
 
     const result = await debugCommand(tabId, 'Page.captureScreenshot', params);
-    return { data: result.data, dims };
+
+    // Calculate actual output dimensions for preview
+    const outputDims = {
+      scrollWidth: Math.ceil(dims.scrollWidth * scale),
+      scrollHeight: Math.ceil(dims.scrollHeight * scale),
+    };
+
+    return { data: result.data, dims: outputDims };
 
   } finally {
     // Always detach even on error — removes the DevTools yellow bar

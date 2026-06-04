@@ -11,6 +11,7 @@ Versionamento segue [Semantic Versioning](https://semver.org/).
 ### Adicionado
 
 - Suporte inicial ao formato WebP para captura, prévia e download.
+- Adicionada opção de captura em resolução 2×.
 
 ### Planejado para v1.2.0
 

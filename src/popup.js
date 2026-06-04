@@ -1,12 +1,13 @@
 // ─── Default state ────────────────────────────────────────────────────────────
 
 const DEFAULTS = {
-  mode:      'full',
-  format:    'png',
-  quality:   85,
-  delay:     0,
-  download:  true,
-  clipboard: false,
+  mode:       'full',
+  format:     'png',
+  quality:    85,
+  delay:      0,
+  resolution: '1',
+  download:   true,
+  clipboard:  false,
 };
 
 const state = { ...DEFAULTS, busy: false };
@@ -21,6 +22,7 @@ const captureText     = $('captureText');
 const qualitySlider   = $('qualitySlider');
 const qualityValue    = $('qualityValue');
 const qualityBox      = $('qualityContainer');
+const resolutionGroup = $('resolutionGroup');
 const outputDownload  = $('outputDownload');
 const outputClipboard = $('outputClipboard');
 const outputNote      = $('outputNote');
@@ -51,12 +53,13 @@ async function loadSettings() {
 
 function saveSettings() {
   const prefs = {
-    mode:      state.mode,
-    format:    state.format,
-    quality:   state.quality,
-    delay:     state.delay,
-    download:  state.download,
-    clipboard: state.clipboard,
+    mode:       state.mode,
+    format:     state.format,
+    quality:    state.quality,
+    delay:      state.delay,
+    resolution: state.resolution,
+    download:   state.download,
+    clipboard:  state.clipboard,
   };
   chrome.storage.local.set({ [STORAGE_KEY]: prefs }).catch(() => {});
 }
@@ -72,6 +75,9 @@ function applyStateToUI() {
   qualityBox.style.display = state.format === 'jpeg' ? 'flex' : 'none';
   qualitySlider.value = state.quality;
   qualityValue.textContent = `${state.quality}%`;
+
+  // Resolution
+  setActiveByValue('resolutionGroup', '.pill-btn', String(state.resolution || '1'));
 
   // Delay
   setActiveByValue('delayGroup', '.pill-btn', String(state.delay));
@@ -137,6 +143,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     state.format = btn.dataset.value;
     qualityBox.style.display = state.format === 'jpeg' ? 'flex' : 'none';
     updateOutputControls();
+    saveSettings();
+  });
+
+  // Resolution
+  delegate('resolutionGroup', '.pill-btn', (btn) => {
+    activateIn('resolutionGroup', btn);
+    state.resolution = btn.dataset.value;
     saveSettings();
   });
 
@@ -234,9 +247,10 @@ async function handleCapture() {
       action:  'capture',
       tabId:   tab.id,
       options: {
-        format:   state.format,
-        quality:  state.quality,
-        fullPage: state.mode === 'full',
+        format:     state.format,
+        quality:    state.quality,
+        fullPage:   state.mode === 'full',
+        resolution: parseInt(state.resolution, 10),
       },
     });
 
@@ -246,7 +260,8 @@ async function handleCapture() {
     const { mime, ext } = getFormatMeta(state.format);
     const shouldCopy = state.format === 'png' && state.clipboard;
     const dataUrl  = `data:${mime};base64,${result.data}`;
-    const filename = buildFilename(tab.title, ext);
+    const resolution = parseInt(state.resolution, 10);
+    const filename = buildFilename(tab.title, ext, resolution);
 
     // ── Download ───────────────────────────────────
     if (state.download) {
@@ -311,19 +326,20 @@ function activateIn(parentId, activeEl) {
   activeEl.classList.add('active');
 }
 
-function buildFilename(title, ext) {
+function buildFilename(title, ext, resolution = 1) {
   const clean = (title || 'pagina')
     .replace(/[<>:"/\\|?*]/g, '')
     .trim()
     .replace(/\s+/g, '-')
     .toLowerCase()
     .slice(0, 60);
+  const resolutionSuffix = resolution > 1 ? `@${resolution}x` : '';
 
   const now  = new Date();
   const date = now.toISOString().slice(0, 10);
   const time = now.toTimeString().slice(0, 8).replace(/:/g, '-');
 
-  return `${clean}_${date}_${time}.${ext}`;
+  return `${clean}_${date}_${time}${resolutionSuffix}.${ext}`;
 }
 
 function sleep(ms) {
