@@ -25,6 +25,8 @@ _(em breve)_
 3. Ative **Modo do desenvolvedor** → **Carregar sem compactação**
 4. Selecione a pasta `src/` dentro da pasta descompactada
 
+> O atalho pode ser alterado pelo navegador em `chrome://extensions/shortcuts`.
+
 ---
 
 ## Funcionalidades
@@ -33,6 +35,7 @@ _(em breve)_
 - **Visível apenas** — captura somente a área visível na tela
 - **PNG, JPEG ou WebP** — escolha o formato da captura
 - **Resolução 1× ou 2×** — capture em tamanho normal ou alta resolução
+- **Atalho de teclado** — abra o SnapPage rapidamente (`Alt+Shift+S`, ou `Command+Shift+S` no macOS)
 - **Delay configurável** — 1s, 3s ou 5s antes de capturar (útil para hover states e animações)
 - **Download** com nome automático: `titulo-da-pagina_2026-05-31_14-22-05.png`
 - **Copiar para clipboard** — cola direto no Figma, Notion, onde quiser

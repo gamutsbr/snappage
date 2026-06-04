@@ -27,6 +27,15 @@
       "128": "icons/icon128.png"
     }
   },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Alt+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Abrir SnapPage"
+    }
+  },
   "background": {
     "service_worker": "background.js"
   }

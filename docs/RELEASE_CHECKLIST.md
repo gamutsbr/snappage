@@ -155,6 +155,8 @@ Test from the extracted ZIP, not from the working tree.
 - [ ] Confirm the extension card shows the correct version.
 - [ ] Open the popup.
 - [ ] Confirm the popup shows the correct version.
+- [ ] Confirmar que o atalho de teclado abre o popup do SnapPage.
+- [ ] Confirmar em `chrome://extensions/shortcuts` se o atalho foi atribuído corretamente.
 - [ ] Confirmar os testes principais com zoom do navegador em 100%.
 - [ ] Run a visible-area capture.
 - [ ] Run a full-page capture.

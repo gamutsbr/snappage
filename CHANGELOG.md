@@ -12,6 +12,7 @@ Versionamento segue [Semantic Versioning](https://semver.org/).
 
 - Suporte inicial ao formato WebP para captura, prévia e download.
 - Adicionada opção de captura em resolução 2×.
+- Adicionado atalho de teclado para abrir o popup do SnapPage.
 
 ### Documentação e processo
 
