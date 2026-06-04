@@ -58,6 +58,8 @@ _(em breve)_
 
 Usa a **Chrome Debugger API** com `Page.captureScreenshot` e `captureBeyondViewport: true` — o mesmo mecanismo interno do DevTools. O Chrome renderiza a página inteira sem precisar rolar nada.
 
+> Observação: a captura de página completa é validada com o zoom do navegador em 100%. Em alguns sites, zoom diferente de 100% pode causar corte ou sobra de área no final da imagem.
+
 > Durante a captura aparece brevemente a barra "DevTools conectado". É normal e desaparece em menos de 1 segundo.
 
 ---

@@ -13,6 +13,10 @@ Versionamento segue [Semantic Versioning](https://semver.org/).
 - Suporte inicial ao formato WebP para captura, prévia e download.
 - Adicionada opção de captura em resolução 2×.
 
+### Documentação e processo
+
+- Documentada a recomendação de testar capturas de página completa com zoom do navegador em 100%.
+
 ### Planejado para v1.2.0
 
 - Atalho de teclado global (`Alt+Shift+S`)
