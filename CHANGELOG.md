@@ -8,21 +8,25 @@ Versionamento segue [Semantic Versioning](https://semver.org/).
 
 ## [Não lançado]
 
+## [1.2.0] — 2026-06-04
+
 ### Adicionado
 
-- Suporte inicial ao formato WebP para captura, prévia e download.
-- Adicionada opção de captura em resolução 2×.
-- Adicionado atalho de teclado para abrir o popup do SnapPage.
+- Suporte ao formato WebP para captura, prévia e download.
+- Opção de captura em resolução 1× ou 2×.
+- Atalho de teclado para abrir o popup do SnapPage.
 
-### Documentação e processo
+### Alterado
 
+- Copiar imagem fica disponível apenas para PNG.
+- JPEG e WebP usam fluxo de download, com aviso quando copiar não está disponível.
+- Arquivos em 2× recebem sufixo `@2x` no nome.
+- Metadados da prévia exibem as dimensões finais da captura.
+
+### Segurança e limites
+
+- Adicionado limite conservador de 50 MP para evitar capturas 2× grandes demais.
 - Documentada a recomendação de testar capturas de página completa com zoom do navegador em 100%.
-
-### Planejado para v1.2.0
-
-- Atalho de teclado global (`Alt+Shift+S`)
-- Formato WebP
-- Opção de captura em alta resolução (2×)
 
 ---
 

@@ -80,7 +80,8 @@ Usa a **Chrome Debugger API** com `Page.captureScreenshot` e `captureBeyondViewp
 - [x] v1.0.0 — MVP: captura completa, formatos, delay, download, clipboard, persistência
 - [x] v1.0.1 — Correções de ícone, versão no popup e empacotamento
 - [x] v1.1.0 — QA baseline, checklist e automação de release
-- [ ] Futuro — WebP, captura 2×, atalhos, captura por elemento, seleção livre, anotações e Chrome Web Store
+- [x] v1.2.0 — WebP, captura 2×, atalho de teclado e melhorias de UX
+- [ ] Futuro — captura por elemento, seleção livre, anotações e Chrome Web Store
 
 Veja o roadmap completo em [docs/ROADMAP.md](docs/ROADMAP.md).
 

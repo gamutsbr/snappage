@@ -8,17 +8,18 @@ This roadmap is directional. Items may move between versions as the product matu
 
 ## Current stable version
 
-### v1.1.0 — Quality baseline and release automation
+### v1.2.0 — Capture quality improvements
 
-Release focused on process quality and repeatable shipping.
+Release focused on capture quality improvements and safer UX defaults.
 
 Delivered in this version:
 
-- Official public roadmap in `docs/ROADMAP.md`.
-- Official release checklist in `docs/RELEASE_CHECKLIST.md`.
-- Local packaging automation with `scripts/package-release.ps1`.
-- Local release readiness validation with `scripts/validate-release.ps1`.
-- Updated documentation links and release workflow guidance.
+- WebP capture format for capture, preview, and download.
+- 1× / 2× capture resolution option.
+- Keyboard shortcut to open the popup action.
+- PNG-only clipboard copy behavior.
+- JPEG/WebP download-only behavior with guidance in the popup.
+- Conservative 50 MP guardrail for oversized 2× captures.
 
 ---
 
@@ -53,7 +54,9 @@ Completed scope:
 
 ### v1.2.0 — Capture quality improvements
 
-Possible scope:
+Status: released as the current stable version.
+
+Completed scope:
 
 - Keyboard shortcut.
 - WebP format.

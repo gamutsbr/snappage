@@ -158,11 +158,14 @@ Test from the extracted ZIP, not from the working tree.
 - [ ] Confirmar que o atalho de teclado abre o popup do SnapPage.
 - [ ] Confirmar em `chrome://extensions/shortcuts` se o atalho foi atribuído corretamente.
 - [ ] Confirmar os testes principais com zoom do navegador em 100%.
-- [ ] Run a visible-area capture.
-- [ ] Run a full-page capture.
-- [ ] Test PNG download.
-- [ ] Test JPEG download.
-- [ ] Test clipboard copy, if supported by the browser/session.
+- [ ] Validar captura de página completa em PNG, JPEG e WebP.
+- [ ] Validar captura de área visível em PNG, JPEG e WebP.
+- [ ] Validar capturas em resolução 1× e 2×.
+- [ ] Confirmar que arquivos em 2× recebem sufixo `@2x`.
+- [ ] Confirmar que dimensões de saída em 2× ficam aproximadamente dobradas.
+- [ ] Confirmar que o limite de 50 MP em 2× mostra erro claro em vez de travar.
+- [ ] Confirmar que copiar funciona em PNG.
+- [ ] Confirmar que copiar continua indisponível para JPEG/WebP.
 - [ ] Confirm settings persistence still works.
 - [ ] Test at least Chrome and Brave when possible.
 - [ ] Test Edge before public store-oriented releases.

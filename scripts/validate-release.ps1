@@ -91,6 +91,9 @@ if ($null -ne $manifest) {
   if (-not ($manifest.PSObject.Properties.Name -contains 'action') -or -not ($manifest.action.PSObject.Properties.Name -contains 'default_icon')) {
     Add-ValidationError 'Manifest missing action.default_icon.'
   }
+  if (-not ($manifest.PSObject.Properties.Name -contains 'commands') -or -not ($manifest.commands.PSObject.Properties.Name -contains '_execute_action')) {
+    Add-ValidationError 'Manifest missing commands._execute_action.'
+  }
 
   $version = [string]$manifest.version
   if (-not $version) {
